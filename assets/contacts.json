@@ -1,0 +1,26 @@
+[
+  {
+    "title": "Bizin salgymyz",
+    "subtitle": "Türkmenistan, Aşgabat şäheri, Abadan Etrap, Altyn Asyr köçesi, jaý 27",
+    "url": "https://www.google.com/maps?q=Aşgabat,10+ýyl+Abadançylyk+25",
+    "icon": "HugeIcons.strokeRoundedLocation01"
+  },
+  {
+    "title": "Email",
+    "subtitle": "info@naduaashgabat.com.tm",
+    "url": "mailto:info@biznes.tm",
+    "icon": "HugeIcons.strokeRoundedMail01"
+  },
+  {
+    "title": "Telefon belgimiz",
+    "subtitle": "+993-12-39-90-06",
+    "url": "tel:+99312399006",
+    "icon": "HugeIcons.strokeRoundedTelephone"
+  },
+  {
+    "title": "FAX",
+    "subtitle": "39-90-05",
+    "url": null,
+    "icon": "HugeIcons.strokeRoundedPrinter"
+  }
+]
