@@ -28,7 +28,7 @@ class SearchInputField extends StatelessWidget {
           decoration: const InputDecoration(
             isDense: true,
             hintText:
-                'Gözleg (halynyň adyny, reňkini we koduny gözledip bilersiňiz)',
+                'Gözleg (halynyň kategoriýasyny, reňkini we koduny gözledip bilersiňiz)',
             hintStyle: TextStyle(
               color: Color.fromARGB(255, 102, 102, 102),
               fontSize: 16,

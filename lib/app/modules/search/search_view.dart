@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:haly/app/modules/category/widgets/product_card_widget.dart';
-import 'package:haly/app/modules/search/controller/search_controller.dart'
-    as search_controller;
+import 'package:haly/app/modules/search/controller/search_controller.dart' as search_controller;
 import 'package:haly/app/modules/search/widgets/search_input_field.dart';
 import 'package:haly/app/theme/theme/app_theme.dart';
 import 'package:haly/app/widgets/custom_app_bar_logo.dart';
@@ -26,8 +25,7 @@ class _SearchViewState extends State<SearchView> {
 
   @override
   Widget build(BuildContext context) {
-    final search_controller.SearchController controller =
-        Get.put(search_controller.SearchController());
+    final search_controller.SearchController controller = Get.put(search_controller.SearchController());
     final isTablet = MediaQuery.of(context).size.width > 600;
 
     return Scaffold(
@@ -60,10 +58,7 @@ class _SearchViewState extends State<SearchView> {
                           const SizedBox(height: 24),
                           const Text(
                             'Haryt tapylmady',
-                            style: TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.w600,
-                                fontFamily: Fonts.gilroySemiBold),
+                            style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600, fontFamily: Fonts.gilroySemiBold),
                             textAlign: TextAlign.center,
                           ),
                           const SizedBox(height: 8),
@@ -86,9 +81,9 @@ class _SearchViewState extends State<SearchView> {
                     itemCount: controller.filteredProducts.length,
                     gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                       maxCrossAxisExtent: 231,
-                      mainAxisSpacing: isTablet ? 24 : 12,
-                      crossAxisSpacing: isTablet ? 24 : 12,
-                      childAspectRatio: 231 / 600,
+                      mainAxisSpacing: 12,
+                      crossAxisSpacing: 12,
+                      childAspectRatio: 260 / 600,
                     ),
                     itemBuilder: (context, index) {
                       return ProductCardWidget(

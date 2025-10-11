@@ -124,6 +124,11 @@ class OrderDetailView extends GetView<OrderDetailViewController> {
                                           fontSize: 20,
                                           fontWeight: FontWeight.w500,
                                           fontFamily: Fonts.gilroyMedium)),
+                                  Text("Bellik :   ${item.note}",
+                                      style: const TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w500,
+                                          fontFamily: Fonts.gilroyMedium)),
                                   const SizedBox(height: 6),
                                   Padding(
                                     padding: EdgeInsets.zero,

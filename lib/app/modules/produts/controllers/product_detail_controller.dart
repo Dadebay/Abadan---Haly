@@ -9,7 +9,10 @@ import 'package:hugeicons/hugeicons.dart';
 class ProductDetailController extends GetxController {
   final Product product;
 
-  ProductDetailController({required this.product});
+  ProductDetailController({
+    required this.product,
+    required category,
+  });
 
   final RxInt selectedIndex = 0.obs;
   final RxInt quantity = 1.obs;
@@ -33,11 +36,14 @@ class ProductDetailController extends GetxController {
   final RxList<Product> filteredProductskopsatylan = <Product>[].obs;
   final RxList<Edge> edges = <Edge>[].obs;
   var settings = Rx<Settings?>(null);
-  Rx<CarpetData?> _carpetData = Rx<CarpetData?>(null);
+  final Rx<CarpetData?> _carpetData = Rx<CarpetData?>(null);
   final widthFocusNode = FocusNode();
   final lengthFocusNode = FocusNode();
   var widthErrorText = Rx<String?>(null);
   var heightErrorText = Rx<String?>(null);
+  final Rx<Category?> category = Rx<Category?>(null);
+  final Rx<Subcategory?> subcategory = Rx<Subcategory?>(null);
+
   @override
   void onInit() {
     super.onInit();
@@ -69,32 +75,25 @@ class ProductDetailController extends GetxController {
   void _loadFilteredProducts() async {
     final carpetData = await _dataService.getCarpetData();
     _carpetData.value = carpetData;
+    category.value = carpetData.categories.firstWhereOrNull((c) => c.id == product.categoryId);
+
+    if (category.value != null) {
+      subcategory.value = category.value!.subcategories.firstWhereOrNull((s) => s.id == product.subCategoryId);
+    }
     final allProducts = carpetData.products;
-    filteredProducts.value = allProducts
-        .where((p) =>
-            carpetData.categories
-                .firstWhere((c) => c.id == p.categoryId)
-                .name ==
-            carpetData.categories
-                .firstWhere((c) => c.id == product.categoryId)
-                .name &&
-            p.code != product.code)
-        .toList();
+    filteredProducts.value = allProducts.where((p) => p.categoryId == product.categoryId && p.subCategoryId == product.subCategoryId && p.code != product.code).toList();
   }
 
   void loadFilteredProductskopsatylan() async {
     final carpetData = await _dataService.getCarpetData();
     _carpetData.value = carpetData;
-    final allProducts = carpetData.products;
-    final category = carpetData.categories
-        .firstWhereOrNull((c) => c.id == product.categoryId);
 
-    if (category != null) {
-      final topSellingIds = category.topSellingProductsIds;
+    if (category.value != null) {
+      final topSellingIds = category.value!.topSellingProductsIds;
 
-      if (topSellingIds != null && topSellingIds.isNotEmpty) {
-        filteredProductskopsatylan.value =
-            allProducts.where((p) => topSellingIds.contains(p.id)).toList();
+      if (topSellingIds.isNotEmpty) {
+        final allProducts = carpetData.products;
+        filteredProductskopsatylan.value = allProducts.where((p) => topSellingIds.contains(p.id)).toList();
       } else {
         filteredProductskopsatylan.value = [];
       }
@@ -239,8 +238,7 @@ class ProductDetailController extends GetxController {
     selectedFigureIndex.value = index;
     selectedSizeIndex.value = -1;
 
-    if (product.figures.isNotEmpty &&
-        product.figures[index].colors.isNotEmpty) {
+    if (product.figures.isNotEmpty && product.figures[index].colors.isNotEmpty) {
       selectedColorName.value = product.figures[index].colors.first.name;
       selectedColorHex.value = product.figures[index].colors.first.hexCode;
       selectedColorImage.value = product.figures[index].colors.first.image;
@@ -270,8 +268,7 @@ class ProductDetailController extends GetxController {
     selectedColorHex.value = color.hexCode;
     selectedColorImage.value = color.image;
 
-    final currentFigureColors =
-        product.figures[selectedFigureIndex.value].colors;
+    final currentFigureColors = product.figures[selectedFigureIndex.value].colors;
     final colorIndex = currentFigureColors.indexOf(color);
     if (colorIndex != -1 && pageController.hasClients) {
       pageController.jumpToPage(colorIndex);
@@ -280,8 +277,7 @@ class ProductDetailController extends GetxController {
 
   void addProductToCart() {
     // Geometrik şekil ve renk seçimi kontrolleri aynı kalıyor...
-    if (selectedFigureIndex.value < 0 ||
-        selectedFigureIndex.value >= product.figures.length) {
+    if (selectedFigureIndex.value < 0 || selectedFigureIndex.value >= product.figures.length) {
       // ... hata mesajı
       return;
     }
@@ -293,8 +289,7 @@ class ProductDetailController extends GetxController {
       if (selectedColorHex.value.isEmpty) {
         /*...*/ return;
       }
-      selectedColor = selectedFigure.colors
-          .firstWhereOrNull((c) => c.hexCode == selectedColorHex.value);
+      selectedColor = selectedFigure.colors.firstWhereOrNull((c) => c.hexCode == selectedColorHex.value);
       if (selectedColor == null) {
         /*...*/ return;
       }
@@ -307,13 +302,8 @@ class ProductDetailController extends GetxController {
 
     if (customWidth != null && customLength != null) {
       // Özel ölçü girilmişse onu kullan
-      selectedSize = Size(
-          id: 0,
-          width: customWidth.toInt(),
-          height: customLength.toInt(),
-          measurementUnit: 'sm');
-    } else if (selectedSizeIndex.value != -1 &&
-        selectedSizeIndex.value < selectedFigure.sizes.length) {
+      selectedSize = Size(id: 0, width: customWidth.toInt(), height: customLength.toInt(), measurementUnit: 'sm');
+    } else if (selectedSizeIndex.value != -1 && selectedSizeIndex.value < selectedFigure.sizes.length) {
       // Standart ölçü seçilmişse onu kullan
       selectedSize = selectedFigure.sizes[selectedSizeIndex.value];
     }
@@ -349,8 +339,7 @@ class ProductDetailController extends GetxController {
       product: product,
       quantity: quantity.value,
       colorName: selectedColor?.name ?? '',
-      size:
-          '${selectedSize.width}x${selectedSize.height} ${selectedSize.measurementUnit}',
+      size: '${selectedSize.width}x${selectedSize.height} ${selectedSize.measurementUnit}',
       imageUrl: selectedColorImage.value,
       edge: selectedEdge.name,
       note: note.value,
@@ -361,21 +350,15 @@ class ProductDetailController extends GetxController {
 
   CartItem? getCartItem() {
     final selectedFigure = product.figures[selectedFigureIndex.value];
-    final selectedColor = selectedFigure.colors
-        .firstWhereOrNull((c) => c.hexCode == selectedColorHex.value);
+    final selectedColor = selectedFigure.colors.firstWhereOrNull((c) => c.hexCode == selectedColorHex.value);
 
     Size? selectedSize;
     final customWidth = double.tryParse(widthController.text);
     final customLength = double.tryParse(lengthController.text);
 
     if (customWidth != null && customLength != null) {
-      selectedSize = Size(
-          id: 0,
-          width: customWidth.toInt(),
-          height: customLength.toInt(),
-          measurementUnit: 'sm');
-    } else if (selectedSizeIndex.value != -1 &&
-        selectedSizeIndex.value < selectedFigure.sizes.length) {
+      selectedSize = Size(id: 0, width: customWidth.toInt(), height: customLength.toInt(), measurementUnit: 'sm');
+    } else if (selectedSizeIndex.value != -1 && selectedSizeIndex.value < selectedFigure.sizes.length) {
       selectedSize = selectedFigure.sizes[selectedSizeIndex.value];
     }
 
@@ -387,8 +370,7 @@ class ProductDetailController extends GetxController {
       product: product,
       quantity: quantity.value,
       colorName: selectedColor?.name ?? '',
-      size:
-          '${selectedSize.width}x${selectedSize.height} ${selectedSize.measurementUnit}',
+      size: '${selectedSize.width}x${selectedSize.height} ${selectedSize.measurementUnit}',
       imageUrl: selectedColorImage.value,
       edge: selectedEdge.name,
       note: note.value,
@@ -397,14 +379,12 @@ class ProductDetailController extends GetxController {
 
   String getCategoryName(int categoryId) {
     if (_carpetData.value == null) return 'Unknown';
-    final category = _carpetData.value!.categories
-        .firstWhereOrNull((c) => c.id == categoryId);
+    final category = _carpetData.value!.categories.firstWhereOrNull((c) => c.id == categoryId);
     return category?.name ?? 'Unknown';
   }
 
   Category? getCategory(int categoryId) {
     if (_carpetData.value == null) return null;
-    return _carpetData.value!.categories
-        .firstWhereOrNull((c) => c.id == categoryId);
+    return _carpetData.value!.categories.firstWhereOrNull((c) => c.id == categoryId);
   }
 }

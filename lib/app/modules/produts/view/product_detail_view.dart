@@ -13,8 +13,8 @@ import 'package:haly/app/theme/theme/theme_colors.dart';
 
 class ProductDetailView extends StatefulWidget {
   final Product product;
-
-  const ProductDetailView({super.key, required this.product});
+  final Category? category;
+  const ProductDetailView({super.key, required this.product, this.category});
 
   @override
   State<ProductDetailView> createState() => _ProductDetailViewState();
@@ -25,7 +25,17 @@ class _ProductDetailViewState extends State<ProductDetailView> {
   @override
   void initState() {
     super.initState();
-    controller = Get.put(ProductDetailController(product: widget.product));
+    controller = Get.put(
+      ProductDetailController(product: widget.product, category: widget.category),
+      tag: widget.product.code, // Unique tag for each product
+    );
+  }
+
+  @override
+  void dispose() {
+    // Clean up the controller to prevent memory leaks and state issues
+    Get.delete<ProductDetailController>(tag: widget.product.code);
+    super.dispose();
   }
 
   @override
@@ -58,7 +68,7 @@ class _ProductDetailViewState extends State<ProductDetailView> {
                             builder: (context) => ImageZoomScreen(
                               imagePath: color.image,
                               productCode: widget.product.code,
-                              productName: controller.getCategoryName(widget.product.categoryId),
+                              productName: controller.category.value?.name ?? '',
                             ),
                           ),
                         );
@@ -138,7 +148,7 @@ class _ProductDetailViewState extends State<ProductDetailView> {
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Text(
-                          controller.getCategoryName(widget.product.categoryId),
+                          widget.category?.name ?? '',
                           style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
@@ -158,15 +168,15 @@ class _ProductDetailViewState extends State<ProductDetailView> {
                           borderRadius: BorderRadius.circular(8),
                           border: Border.all(color: const Color(0xFF4CAF50)),
                         ),
-                        child: const Text(
-                          "Dekor",
-                          style: TextStyle(
-                            color: AppColors.green,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            fontFamily: Fonts.gilroySemiBold,
-                          ),
-                        ),
+                        child: Obx(() => Text(
+                              controller.subcategory.value?.name ?? '',
+                              style: const TextStyle(
+                                color: AppColors.green,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                                fontFamily: Fonts.gilroySemiBold,
+                              ),
+                            )),
                       ),
                     ],
                   ),
@@ -182,7 +192,7 @@ class _ProductDetailViewState extends State<ProductDetailView> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              controller.getCategoryName(widget.product.categoryId),
+                              widget.category?.name ?? '',
                               style: const TextStyle(
                                 fontSize: 32,
                                 fontWeight: FontWeight.w600,
@@ -647,49 +657,47 @@ class _ProductDetailViewState extends State<ProductDetailView> {
                     ),
                   ],
                   const SizedBox(height: 40),
-                  Container(
-                    color: const Color.fromARGB(255, 247, 250, 252),
-                    child: Table(
-                      defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-                      border: TableBorder.all(color: Color(0xFFE7E7E7)),
-                      columnWidths: const <int, TableColumnWidth>{
-                        0: FlexColumnWidth(2), // Sol sütun için esnek genişlik
-                        1: FlexColumnWidth(2), // Sağ sütun için esnek genişlik
-                      },
-                      children: (controller.getCategory(widget.product.categoryId)?.attributes ?? []).map((attr) {
-                        return TableRow(
-                          children: [
-                            // Sol Hücre (İsim)
-                            Container(
-                              color: const Color.fromARGB(255, 247, 250, 252),
-                              padding: const EdgeInsets.all(12.0),
-                              child: Text(
-                                attr.name,
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.w400,
-                                  fontFamily: Fonts.gilroyRegular,
-                                  fontSize: 20,
+                  Obx(() => Container(
+                        color: const Color.fromARGB(255, 247, 250, 252),
+                        child: Table(
+                          defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+                          border: TableBorder.all(color: Color(0xFFE7E7E7)),
+                          columnWidths: const <int, TableColumnWidth>{
+                            0: FlexColumnWidth(2),
+                            1: FlexColumnWidth(2),
+                          },
+                          children: (controller.category.value?.attributes ?? []).map((attr) {
+                            return TableRow(
+                              children: [
+                                Container(
+                                  color: const Color.fromARGB(255, 247, 250, 252),
+                                  padding: const EdgeInsets.all(12.0),
+                                  child: Text(
+                                    attr.name,
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.w400,
+                                      fontFamily: Fonts.gilroyRegular,
+                                      fontSize: 20,
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ),
-                            // Sağ Hücre (Değer)
-                            Container(
-                              color: Colors.white,
-                              padding: const EdgeInsets.all(12.0),
-                              child: Text(
-                                attr.value,
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.w400,
-                                  fontFamily: Fonts.gilroyRegular,
-                                  fontSize: 20,
+                                Container(
+                                  color: Colors.white,
+                                  padding: const EdgeInsets.all(12.0),
+                                  child: Text(
+                                    attr.value,
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.w400,
+                                      fontFamily: Fonts.gilroyRegular,
+                                      fontSize: 20,
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ),
-                          ],
-                        );
-                      }).toList(),
-                    ),
-                  ),
+                              ],
+                            );
+                          }).toList(),
+                        ),
+                      )),
                   const SizedBox(height: 30),
                   Obx(() {
                     if (controller.filteredProductskopsatylan.isNotEmpty) {

@@ -11,11 +11,8 @@ class CategoryGridView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final CategoryController controller = Get.find();
-    final selectedSubcategory = controller
-        .category.value!.subcategories[controller.selectedTabIndex.value];
-    final filteredProducts = controller.products
-        .where((p) => p.subCategoryId == selectedSubcategory.id)
-        .toList();
+    final selectedSubcategory = controller.category.value!.subcategories[controller.selectedTabIndex.value];
+    final filteredProducts = controller.products.where((p) => p.subCategoryId == selectedSubcategory.id).toList();
 
     return Padding(
       padding: const EdgeInsets.all(16.0),
@@ -25,9 +22,9 @@ class CategoryGridView extends StatelessWidget {
           itemCount: filteredProducts.length,
           gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
             maxCrossAxisExtent: 231,
-            mainAxisSpacing: isTablet ? 24 : 12,
-            crossAxisSpacing: isTablet ? 24 : 12,
-            childAspectRatio: 231 / 600,
+            mainAxisSpacing: 12,
+            crossAxisSpacing: 12,
+            childAspectRatio: 260 / 600,
           ),
           itemBuilder: (context, index) {
             return ProductCardWidget(product: filteredProducts[index]);

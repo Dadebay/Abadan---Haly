@@ -8,7 +8,6 @@ import 'package:haly/app/modules/about_us/widgets/about_us_header.dart';
 import 'package:haly/app/widgets/custom_app_bar.dart';
 import 'package:lottie/lottie.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:video_player/video_player.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
 
 class AboutUsView extends StatelessWidget {

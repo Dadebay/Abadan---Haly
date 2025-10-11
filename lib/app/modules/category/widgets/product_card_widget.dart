@@ -1,19 +1,19 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:haly/app/data/carpet_model.dart';
+import 'package:haly/app/modules/category/widgets/product_card_widget_controller.dart';
 import 'package:haly/app/theme/theme/app_theme.dart';
 import 'package:haly/app/theme/theme/theme_colors.dart';
-import 'package:haly/app/modules/category/widgets/product_card_widget_controller.dart';
 
 import '../../produts/view/product_detail_view.dart';
 
 class ProductCardWidget extends GetView<ProductCardWidgetController> {
   final Product product;
 
-  ProductCardWidget({Key? key, required this.product}) : super(key: key) {
-    Get.put(ProductCardWidgetController(product: product),
-        tag: product.id.toString());
+  ProductCardWidget({super.key, required this.product}) {
+    Get.put(ProductCardWidgetController(product: product), tag: product.id.toString());
   }
 
   @override
@@ -26,6 +26,7 @@ class ProductCardWidget extends GetView<ProductCardWidgetController> {
         Get.to(
             () => ProductDetailView(
                   product: product,
+                  category: controller.category.value,
                 ),
             preventDuplicates: false);
       },
@@ -42,13 +43,20 @@ class ProductCardWidget extends GetView<ProductCardWidgetController> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            // PhotoView(
+            //             imageProvider: FileImage(
+            //               File(product.figures.first.colors.first.image),
+            //             ),
+            //             minScale: PhotoViewComputedScale.contained,
+            //             maxScale: PhotoViewComputedScale.covered * 4,
+            //             backgroundDecoration: const BoxDecoration(color: Colors.white),
+            //           )
             Expanded(
-              flex: 7,
-              child: (product.figures.isNotEmpty &&
-                      product.figures.first.colors.isNotEmpty)
+              flex: 5,
+              child: (product.figures.isNotEmpty && product.figures.first.colors.isNotEmpty)
                   ? Image.file(
                       File(product.figures.first.colors.first.image),
-                      fit: BoxFit.cover,
+                      fit: BoxFit.fitHeight,
                     )
                   : Image.asset(
                       'assets/images/card1.png', // Placeholder image
@@ -58,13 +66,13 @@ class ProductCardWidget extends GetView<ProductCardWidgetController> {
             Expanded(
               flex: 3,
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
+                padding: const EdgeInsets.only(left: 12, right: 12, top: 8),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Obx(() => Text(
-                          controller.categoryName.value,
+                          controller.category.value?.name ?? '',
                           style: const TextStyle(
                             fontWeight: FontWeight.w600,
                             fontFamily: Fonts.gilroySemiBold,
@@ -81,10 +89,7 @@ class ProductCardWidget extends GetView<ProductCardWidgetController> {
                       ),
                     ),
                     Text(
-                      (product.figures.isNotEmpty &&
-                              product.figures.first.colors.isNotEmpty)
-                          ? product.figures.first.colors.first.name
-                          : '',
+                      (product.figures.isNotEmpty && product.figures.first.colors.isNotEmpty) ? product.figures.first.colors.first.name : '',
                       style: const TextStyle(
                         fontWeight: FontWeight.w500,
                         fontFamily: Fonts.gilroyMedium,
@@ -105,6 +110,7 @@ class ProductCardWidget extends GetView<ProductCardWidgetController> {
                             Get.to(
                                 () => ProductDetailView(
                                       product: product,
+                                      category: controller.category.value,
                                     ),
                                 preventDuplicates: false);
                           },
