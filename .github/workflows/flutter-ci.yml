@@ -36,6 +36,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: xcodebuild -version && xcodebuild -showsdks && xcrun simctl list runtimes
+      - name: Create iOS simulator
+        run: |
+          xcrun simctl create 'CI iPhone' \
+            com.apple.CoreSimulator.SimDeviceType.iPhone-17-Pro \
+            com.apple.CoreSimulator.SimRuntime.iOS-26-5
+          xcrun simctl list devices available
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.47.8'
