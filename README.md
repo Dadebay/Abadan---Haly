@@ -25,4 +25,4 @@ The configured default API host, `https://carpet.sada-devs.com`, did not resolve
 
 The repository has no verified Google Play or App Store listing for this app. Confirm the application IDs with the store records before publishing. Android release builds require the correct keystore and `android/key.properties` outside Git; they no longer use the debug key. Test an upgrade, offline catalog use, order creation, and upload on real devices before a store or GitHub release. No signed release artifact is included here.
 
-CI runs formatting, analysis, the catalog cache regression test, and Android/iOS debug or simulator builds. A passing build does not prove the remote API or order upload works.
+CI runs formatting, analysis, the catalog cache regression test, and an Android debug build. An iOS simulator build passed locally; iOS is not built in CI. A passing build does not prove the remote API or order upload works.
