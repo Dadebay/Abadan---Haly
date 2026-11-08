@@ -1,16 +1,28 @@
-# haly
+# Abadan Haly
 
-A new Flutter project.
+Abadan Haly is a Flutter carpet catalog for the [Abadan Haly company](https://abadanhaly.com.tm/). Customers can browse products and prepare orders offline; staff can upload pending orders when a catalog API is available.
 
-## Getting Started
+## Development
 
-This project is a starting point for a Flutter application.
+Use Flutter 3.47.8, Dart 3.13, and JDK 17. The Android application ID and iOS bundle ID are `com.gurbanov.haly`.
 
-A few resources to get you started if this is your first Flutter project:
+```sh
+flutter pub get
+flutter run
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+dart format --output=none --set-exit-if-changed lib test
+flutter analyze --no-fatal-infos
+flutter test
+flutter build apk --debug
+flutter build ios --simulator --no-codesign
+```
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+The app starts in `lib/main.dart`. Catalog import and local storage are in `lib/app/data/data_service.dart`; screens and controllers are in `lib/app/modules`. The app stores the last valid catalog and pending orders on the device. The API base URL can be changed in Settings. A successful import requires `GET /api/sync`; uploading pending orders uses `POST /api/sync/orders`.
+
+## Release prerequisites
+
+The configured default API host, `https://carpet.sada-devs.com`, did not resolve from the development environment on 8 November 2026. The [company website](https://abadanhaly.com.tm/) responds, but `/api/sync` there returns 404. The backend owner must confirm the intended production API URL and test catalog import and order upload on a real device. A timeout after an order upload may leave its server status uncertain; the backend should confirm how it deduplicates repeated `order_id` values before retry behavior is relied on.
+
+The repository has no verified Google Play or App Store listing for this app. Confirm the application IDs with the store records before publishing. Android release builds require the correct keystore and `android/key.properties` outside Git; they no longer use the debug key. Test an upgrade, offline catalog use, order creation, and upload on real devices before a store or GitHub release. No signed release artifact is included here.
+
+CI runs formatting, analysis, the catalog cache regression test, and an Android debug build. An iOS simulator build passed locally; iOS is not built in CI. A passing build does not prove the remote API or order upload works.

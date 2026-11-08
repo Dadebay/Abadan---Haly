@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:haly/app/theme/theme/app_theme.dart';
 
 Widget buildCustomTab(
   BuildContext context,
@@ -19,7 +18,9 @@ Widget buildCustomTab(
       width: tabWidth,
       decoration: BoxDecoration(
         border: Border.all(
-          color: isSelected ? const Color.fromARGB(255, 185, 215, 135) : const Color(0xFFE0E0E0),
+          color: isSelected
+              ? const Color.fromARGB(255, 185, 215, 135)
+              : const Color(0xFFE0E0E0),
           width: isSelected ? 3 : 2,
         ),
         borderRadius: BorderRadius.circular(20),

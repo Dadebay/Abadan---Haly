@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-import 'package:haly/app/data/carpet_model.dart';
 import 'package:haly/app/data/cart_item_model.dart';
 import 'package:haly/app/data/data_service.dart';
 

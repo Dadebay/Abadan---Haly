@@ -63,7 +63,8 @@ class _MediaViewerState extends State<MediaViewer> {
       backgroundColor: Colors.black,
       body: Center(
         child: _isVideo
-            ? (_chewieController != null && _chewieController!.videoPlayerController.value.isInitialized
+            ? (_chewieController != null &&
+                    _chewieController!.videoPlayerController.value.isInitialized
                 ? Chewie(
                     controller: _chewieController!,
                   )

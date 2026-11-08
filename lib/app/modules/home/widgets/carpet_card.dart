@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:haly/app/theme/theme/app_theme.dart';
 
 class CarpetCard extends StatelessWidget {
   final String title;

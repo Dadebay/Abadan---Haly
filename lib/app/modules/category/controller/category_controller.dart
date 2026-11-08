@@ -37,7 +37,7 @@ class CategoryController extends GetxController
           .toList();
       if (category.value != null && category.value!.subcategories.isNotEmpty) {
         tabController = TabController(
-            length: category.value!.subcategories!.length, vsync: this);
+            length: category.value!.subcategories.length, vsync: this);
         isTabControllerReady.value = true;
       }
     } finally {

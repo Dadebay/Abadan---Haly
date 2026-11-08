@@ -5,8 +5,13 @@ import 'package:haly/app/theme/theme/app_theme.dart';
 
 class ImportProgressDialog extends StatelessWidget {
   final ProfileController controller;
+  final bool isOrderUpload;
 
-  const ImportProgressDialog({super.key, required this.controller});
+  const ImportProgressDialog({
+    super.key,
+    required this.controller,
+    this.isOrderUpload = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -17,37 +22,49 @@ class ImportProgressDialog extends StatelessWidget {
       ),
       child: Padding(
         padding: const EdgeInsets.all(24.0),
-        child: Obx(() {
-          return Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Text(
-                'Maglumatlar ýüklenýär...',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontFamily: Fonts.gilroySemiBold,
-                  fontWeight: FontWeight.w600,
-                ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              isOrderUpload
+                  ? 'Sargytlar ugradylýar...'
+                  : 'Maglumatlar ýüklenýär...',
+              style: const TextStyle(
+                fontSize: 18,
+                fontFamily: Fonts.gilroySemiBold,
+                fontWeight: FontWeight.w600,
               ),
-              const SizedBox(height: 20),
+            ),
+            const SizedBox(height: 20),
+            if (isOrderUpload)
               LinearProgressIndicator(
-                value: controller.downloadProgress.value,
                 backgroundColor: Colors.grey[200],
                 valueColor: const AlwaysStoppedAnimation<Color>(Colors.green),
                 minHeight: 10,
-              ),
-              const SizedBox(height: 10),
-              Text(
-                '${(controller.downloadProgress.value * 100).toStringAsFixed(0)}%',
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontFamily: Fonts.gilroyMedium,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ],
-          );
-        }),
+              )
+            else
+              Obx(() => Column(
+                    children: [
+                      LinearProgressIndicator(
+                        value: controller.downloadProgress.value,
+                        backgroundColor: Colors.grey[200],
+                        valueColor:
+                            const AlwaysStoppedAnimation<Color>(Colors.green),
+                        minHeight: 10,
+                      ),
+                      const SizedBox(height: 10),
+                      Text(
+                        '${(controller.downloadProgress.value * 100).toStringAsFixed(0)}%',
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontFamily: Fonts.gilroyMedium,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  )),
+          ],
+        ),
       ),
     );
   }

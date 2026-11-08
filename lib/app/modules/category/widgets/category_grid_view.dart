@@ -11,8 +11,11 @@ class CategoryGridView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final CategoryController controller = Get.find();
-    final selectedSubcategory = controller.category.value!.subcategories[controller.selectedTabIndex.value];
-    final filteredProducts = controller.products.where((p) => p.subCategoryId == selectedSubcategory.id).toList();
+    final selectedSubcategory = controller
+        .category.value!.subcategories[controller.selectedTabIndex.value];
+    final filteredProducts = controller.products
+        .where((p) => p.subCategoryId == selectedSubcategory.id)
+        .toList();
 
     return Padding(
       padding: const EdgeInsets.all(16.0),

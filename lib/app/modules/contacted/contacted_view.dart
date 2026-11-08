@@ -276,9 +276,9 @@ class ContactScreen extends GetView<ContactedController> {
                         highlightColor: Colors.transparent,
                         hoverColor: Colors.transparent,
                         focusColor: Colors.transparent,
-                        onTap: () => contact.link != null
-                            ? _launchUrl(contact.link!)
-                            : null,
+                        onTap: contact.link.isEmpty
+                            ? null
+                            : () => _launchUrl(contact.link),
                         child: ContactCard(
                           icon: _getIconForContact(contact.icon),
                           title: contact.title,

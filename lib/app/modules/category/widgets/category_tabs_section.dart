@@ -27,7 +27,7 @@ class CategoryTabsSection extends StatelessWidget {
       }
       return Theme(
         data: Theme.of(context).copyWith(
-          tabBarTheme: const TabBarTheme(
+          tabBarTheme: const TabBarThemeData(
             indicator: BoxDecoration(),
             indicatorColor: Colors.transparent,
             indicatorSize: TabBarIndicatorSize.tab,
