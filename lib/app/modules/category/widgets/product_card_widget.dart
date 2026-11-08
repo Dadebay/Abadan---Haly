@@ -13,7 +13,8 @@ class ProductCardWidget extends GetView<ProductCardWidgetController> {
   final Product product;
 
   ProductCardWidget({super.key, required this.product}) {
-    Get.put(ProductCardWidgetController(product: product), tag: product.id.toString());
+    Get.put(ProductCardWidgetController(product: product),
+        tag: product.id.toString());
   }
 
   @override
@@ -53,7 +54,8 @@ class ProductCardWidget extends GetView<ProductCardWidgetController> {
             //           )
             Expanded(
               flex: 5,
-              child: (product.figures.isNotEmpty && product.figures.first.colors.isNotEmpty)
+              child: (product.figures.isNotEmpty &&
+                      product.figures.first.colors.isNotEmpty)
                   ? Image.file(
                       File(product.figures.first.colors.first.image),
                       fit: BoxFit.fitHeight,
@@ -89,7 +91,10 @@ class ProductCardWidget extends GetView<ProductCardWidgetController> {
                       ),
                     ),
                     Text(
-                      (product.figures.isNotEmpty && product.figures.first.colors.isNotEmpty) ? product.figures.first.colors.first.name : '',
+                      (product.figures.isNotEmpty &&
+                              product.figures.first.colors.isNotEmpty)
+                          ? product.figures.first.colors.first.name
+                          : '',
                       style: const TextStyle(
                         fontWeight: FontWeight.w500,
                         fontFamily: Fonts.gilroyMedium,

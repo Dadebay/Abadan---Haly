@@ -20,7 +20,7 @@ class Order {
   factory Order.fromJson(Map<String, dynamic> json) => Order(
         id: json['id'],
         orderDate: DateTime.parse(json['orderDate']),
-        items: List<CartItem>.from(
-            json['items'].map((x) => CartItem.fromJson(x))),
+        items:
+            List<CartItem>.from(json['items'].map((x) => CartItem.fromJson(x))),
       );
 }

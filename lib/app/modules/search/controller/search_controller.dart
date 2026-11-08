@@ -49,7 +49,8 @@ class SearchController extends GetxController {
           category?.name.toLowerCase().contains(lowerCaseQuery) ?? false;
       final bool isSubcategoryMatch =
           subcategory?.name.toLowerCase().contains(lowerCaseQuery) ?? false;
-      final bool isCodeMatch = product.code.toLowerCase().contains(lowerCaseQuery);
+      final bool isCodeMatch =
+          product.code.toLowerCase().contains(lowerCaseQuery);
       final bool isDescriptionMatch =
           product.description?.toLowerCase().contains(lowerCaseQuery) ?? false;
       final bool isColorMatch = product.figures.any((figure) => figure.colors

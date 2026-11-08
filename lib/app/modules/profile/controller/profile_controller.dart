@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haly/app/data/data_service.dart';
-import 'package:haly/app/data/carpet_model.dart';
 import 'package:haly/app/modules/contacted/contacted_controller.dart';
 import 'package:haly/app/modules/home/controller/home_controller.dart';
 import 'package:haly/app/modules/order/order_controller.dart';
@@ -10,13 +9,13 @@ import 'package:haly/app/modules/onboarding/controller/onboarding_controller.dar
 import 'package:haly/app/modules/search/controller/search_controller.dart'
     as search_controller;
 import 'package:haly/app/modules/profile/widgets/import_progress_dialog.dart';
-import 'package:haly/app/data/carpet_model.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:hugeicons/hugeicons.dart';
 import '../../about_us/controller.dart';
 
 class ProfileController extends GetxController {
+  bool _isUploadingOrders = false;
   var isLoading = false.obs;
   final DataService dataService = DataService();
   final RxDouble downloadProgress = 0.0.obs;
@@ -105,9 +104,8 @@ class ProfileController extends GetxController {
   }
 
   Future<void> uploadOrders() async {
+    if (_isUploadingOrders) return;
     final OrderController orderController = Get.find<OrderController>();
-    final carpetData =
-        await dataService.getCarpetData(); // Fetch carpetData here
     if (orderController.orders.isEmpty) {
       Get.snackbar(
         'Ýalňyşlyk',
@@ -132,13 +130,16 @@ class ProfileController extends GetxController {
       return;
     }
 
+    _isUploadingOrders = true;
+    final ordersBeingUploaded = orderController.orders.toList();
     try {
+      final carpetData = await dataService.getCarpetData();
       Get.dialog(
-        ImportProgressDialog(controller: this),
+        ImportProgressDialog(controller: this, isOrderUpload: true),
         barrierDismissible: false,
       );
       final List<Map<String, dynamic>> ordersToUpload = [];
-      for (var order in orderController.orders) {
+      for (var order in ordersBeingUploaded) {
         for (var item in order.items) {
           ordersToUpload.add({
             "order_id": order.id,
@@ -159,15 +160,12 @@ class ProfileController extends GetxController {
       final url = Uri.parse('$domain/api/sync/orders');
       final headers = {'Content-Type': 'application/json'};
       final body = json.encode(ordersToUpload);
-      for (int i = 0; i <= 100; i += 10) {
-        downloadProgress.value = i / 100.0;
-        await Future.delayed(const Duration(milliseconds: 100));
-      }
-
-      final response = await http.post(url, headers: headers, body: body);
+      final response = await http
+          .post(url, headers: headers, body: body)
+          .timeout(const Duration(seconds: 30));
 
       if (response.statusCode == 200) {
-        Get.back();
+        if (Get.isDialogOpen == true) Get.back();
         Get.snackbar(
           'Üstünlikli Tamamlandy',
           "Tassyklama üstünlikli ugradyldy",
@@ -187,9 +185,12 @@ class ProfileController extends GetxController {
           dismissDirection: DismissDirection.horizontal,
           forwardAnimationCurve: Curves.easeOutBack,
         );
-        orderController.orders.clear();
+        final uploadedIds =
+            ordersBeingUploaded.map((order) => order.id).toSet();
+        orderController.orders
+            .removeWhere((order) => uploadedIds.contains(order.id));
       } else {
-        Get.back();
+        if (Get.isDialogOpen == true) Get.back();
         Get.snackbar(
           'Internet Baglanyşygy Ýok',
           "Maglumatlary ýüklemek başartmady. Internet baglanyşygyňyzy barlaň.",
@@ -211,7 +212,7 @@ class ProfileController extends GetxController {
         );
       }
     } catch (e) {
-      Get.back();
+      if (Get.isDialogOpen == true) Get.back();
       Get.snackbar(
         'Internet Baglanyşygy Ýok',
         "Maglumatlary ýüklemek başartmady. Internet baglanyşygyňyzy barlaň.",
@@ -232,6 +233,7 @@ class ProfileController extends GetxController {
         forwardAnimationCurve: Curves.easeOutBack,
       );
     } finally {
+      _isUploadingOrders = false;
       downloadProgress.value = 0.0;
     }
   }

@@ -12,7 +12,8 @@ class CartItemCard extends GetView<CartItemCardController> {
   final CartItem cartItem;
 
   CartItemCard({Key? key, required this.cartItem}) : super(key: key) {
-    Get.put(CartItemCardController(cartItem: cartItem), tag: cartItem.product.id.toString());
+    Get.put(CartItemCardController(cartItem: cartItem),
+        tag: cartItem.product.id.toString());
   }
   final CartController cartController = Get.find<CartController>();
   @override
@@ -49,28 +50,58 @@ class CartItemCard extends GetView<CartItemCardController> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Obx(() => Text(controller.categoryName.value, style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w600, fontFamily: Fonts.gilroySemiBold))),
+                    Obx(() => Text(controller.categoryName.value,
+                        style: const TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.w600,
+                            fontFamily: Fonts.gilroySemiBold))),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 8),
-                      child: Text("Kody: ${cartItem.product.code}", style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w500, fontFamily: Fonts.gilroyMedium)),
+                      child: Text("Kody: ${cartItem.product.code}",
+                          style: const TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w500,
+                              fontFamily: Fonts.gilroyMedium)),
                     ),
-                    Text("Reňki :   ${cartItem.colorName}", style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w500, fontFamily: Fonts.gilroyMedium)),
+                    Text("Reňki :   ${cartItem.colorName}",
+                        style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w500,
+                            fontFamily: Fonts.gilroyMedium)),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 8),
-                      child: Text("Ölçegi : ${cartItem.size}", style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w500, fontFamily: Fonts.gilroyMedium)),
+                      child: Text("Ölçegi : ${cartItem.size}",
+                          style: const TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w500,
+                              fontFamily: Fonts.gilroyMedium)),
                     ),
-                    Text("Kenary: ${cartItem.edge}", style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w500, fontFamily: Fonts.gilroyMedium)),
+                    Text("Kenary: ${cartItem.edge}",
+                        style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w500,
+                            fontFamily: Fonts.gilroyMedium)),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 8),
-                      child: Text("Geometriki şekili : ${cartItem.product.figures.first.name}", style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w500, fontFamily: Fonts.gilroyMedium)),
+                      child: Text(
+                          "Geometriki şekili : ${cartItem.product.figures.first.name}",
+                          style: const TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w500,
+                              fontFamily: Fonts.gilroyMedium)),
                     ),
-                    Text("Bellik :   ${cartItem.note}", style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w500, fontFamily: Fonts.gilroyMedium)),
+                    Text("Bellik :   ${cartItem.note}",
+                        style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w500,
+                            fontFamily: Fonts.gilroyMedium)),
                     const SizedBox(height: 12),
                     Row(
                       children: [
                         QuantityButton(
                           Icons.remove,
-                          onTap: () => cartController.decrementQuantity(cartItem),
+                          onTap: () =>
+                              cartController.decrementQuantity(cartItem),
                         ),
                         const SizedBox(width: 12),
                         SizedBox(
@@ -90,7 +121,8 @@ class CartItemCard extends GetView<CartItemCardController> {
                         QuantityButton(
                           Icons.add,
                           isAdd: true,
-                          onTap: () => cartController.incrementQuantity(cartItem),
+                          onTap: () =>
+                              cartController.incrementQuantity(cartItem),
                         ),
                       ],
                     )

@@ -2,7 +2,6 @@ import 'package:get/get.dart';
 import 'package:haly/app/data/carpet_model.dart';
 import 'package:haly/app/data/data_service.dart';
 
-
 class HomeController extends GetxController {
   final DataService dataService = DataService();
   var carpetData = Rxn<CarpetData>();

@@ -34,7 +34,11 @@ class OnboardingNavigationButtons extends StatelessWidget {
             onPressed: () => controller.nextPage(totalPages),
             child: Text(
               'Dowam et',
-              style: TextStyle(fontSize: isTablet ? 20 : 16, fontWeight: FontWeight.w600, fontFamily: Fonts.gilroySemiBold, color: Colors.white),
+              style: TextStyle(
+                  fontSize: isTablet ? 20 : 16,
+                  fontWeight: FontWeight.w600,
+                  fontFamily: Fonts.gilroySemiBold,
+                  color: Colors.white),
             ),
           ),
         ),
@@ -44,7 +48,11 @@ class OnboardingNavigationButtons extends StatelessWidget {
           },
           child: Text(
             'Göni geçmek',
-            style: TextStyle(color: const Color.fromARGB(255, 39, 39, 40), fontWeight: FontWeight.w600, fontFamily: Fonts.gilroySemiBold, fontSize: isTablet ? 20 : 16),
+            style: TextStyle(
+                color: const Color.fromARGB(255, 39, 39, 40),
+                fontWeight: FontWeight.w600,
+                fontFamily: Fonts.gilroySemiBold,
+                fontSize: isTablet ? 20 : 16),
           ),
         )
       ],

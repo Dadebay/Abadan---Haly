@@ -1,13 +1,19 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:crypto/crypto.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haly/app/data/carpet_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 
 class DataService {
+  DataService({http.Client? client}) : _client = client;
+
   static const String _fileName = 'carpet_data.json';
+  final http.Client? _client;
   final _box = GetStorage();
+
+  Future<http.Response> _get(Uri uri) => _client?.get(uri) ?? http.get(uri);
 
   String get domain => _box.read('domain') ?? 'https://carpet.sada-devs.com';
 
@@ -27,9 +33,9 @@ class DataService {
 
   Future<String> _downloadImage(String imageUrl) async {
     if (imageUrl.startsWith('http')) {
-      final response = await http.get(Uri.parse(imageUrl));
+      final response = await _get(Uri.parse(imageUrl));
       if (response.statusCode == 200) {
-        final fileName = imageUrl.split('/').last;
+        final fileName = sha256.convert(utf8.encode(imageUrl)).toString();
         final localPath = await _imagesPath;
         final file = File('$localPath/$fileName');
         await file.writeAsBytes(response.bodyBytes);
@@ -54,7 +60,9 @@ class DataService {
 
   Future<File> writeCarpetData(String data) async {
     final file = await _localFile;
-    return file.writeAsString(data);
+    final temporaryFile = File('${file.path}.tmp');
+    await temporaryFile.writeAsString(data, flush: true);
+    return temporaryFile.rename(file.path);
   }
 
   Future<String> readCarpetData() async {
@@ -70,9 +78,18 @@ class DataService {
   }
 
   Future<void> importDataFromApi({Function(double)? onProgress}) async {
-    final response = await http.get(Uri.parse('$domain/api/sync'));
+    final response = await _get(Uri.parse('$domain/api/sync'));
     if (response.statusCode == 200) {
-      final Map<String, dynamic> jsonData = json.decode(response.body);
+      final decoded = json.decode(response.body);
+      if (decoded is! Map<String, dynamic>) {
+        throw const FormatException('Invalid catalog response');
+      }
+      try {
+        CarpetData.fromJson(decoded);
+      } catch (_) {
+        throw const FormatException('Invalid catalog response');
+      }
+      final Map<String, dynamic> jsonData = decoded;
 
       final allImageUrls = <String>{};
       if (jsonData.containsKey('intros') && jsonData['intros'] != null) {

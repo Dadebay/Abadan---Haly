@@ -10,8 +10,10 @@ class AddToCartDialog extends GetView<AddToCartDialogController> {
   final CartItem cartItem;
   final VoidCallback onConfirm;
 
-  AddToCartDialog({super.key, required this.cartItem, required this.onConfirm}) {
-    Get.put(AddToCartDialogController(cartItem: cartItem), tag: cartItem.product.id.toString());
+  AddToCartDialog(
+      {super.key, required this.cartItem, required this.onConfirm}) {
+    Get.put(AddToCartDialogController(cartItem: cartItem),
+        tag: cartItem.product.id.toString());
   }
 
   @override
@@ -50,7 +52,8 @@ class AddToCartDialog extends GetView<AddToCartDialogController> {
           children: [
             _buildHeader(context),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 10.0),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 24.0, vertical: 10.0),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -65,7 +68,6 @@ class AddToCartDialog extends GetView<AddToCartDialogController> {
       ),
     );
   }
-
 
   Widget _buildHeader(BuildContext context) {
     return Container(
@@ -116,18 +118,26 @@ class AddToCartDialog extends GetView<AddToCartDialogController> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              _buildInfoRow(Icons.shopping_bag_outlined, 'Mukdary: ${cartItem.quantity}'),
+              _buildInfoRow(
+                  Icons.shopping_bag_outlined, 'Mukdary: ${cartItem.quantity}'),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
-                child: _buildInfoRow(Icons.code, 'Kody: ${cartItem.product.code}'),
+                child:
+                    _buildInfoRow(Icons.code, 'Kody: ${cartItem.product.code}'),
               ),
-              _buildInfoRow(Icons.color_lens_outlined, 'Reňki: ${cartItem.colorName}'),
+              _buildInfoRow(
+                  Icons.color_lens_outlined, 'Reňki: ${cartItem.colorName}'),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
-                child: _buildInfoRow(Icons.aspect_ratio_outlined, 'Ölçegi: ${cartItem.size}'),
+                child: _buildInfoRow(
+                    Icons.aspect_ratio_outlined, 'Ölçegi: ${cartItem.size}'),
               ),
-              _buildInfoRow(Icons.aspect_ratio_outlined, 'Kenary: ${cartItem.edge}'),
-              Padding(padding: const EdgeInsets.symmetric(vertical: 8.0), child: _buildInfoRow(Icons.aspect_ratio_outlined, 'Geometriki şekili: ${cartItem.product.figures.first.name}')),
+              _buildInfoRow(
+                  Icons.aspect_ratio_outlined, 'Kenary: ${cartItem.edge}'),
+              Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: _buildInfoRow(Icons.aspect_ratio_outlined,
+                      'Geometriki şekili: ${cartItem.product.figures.first.name}')),
               _buildInfoRow(Icons.note, 'Bellik: ${cartItem.note}'),
             ],
           ),

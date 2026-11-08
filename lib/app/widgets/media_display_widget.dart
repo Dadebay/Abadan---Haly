@@ -5,7 +5,8 @@ import 'package:video_player/video_player.dart';
 class MediaDisplayWidget extends StatefulWidget {
   final String filePath;
 
-  const MediaDisplayWidget({Key? key, required this.filePath}) : super(key: key);
+  const MediaDisplayWidget({Key? key, required this.filePath})
+      : super(key: key);
 
   @override
   _MediaDisplayWidgetState createState() => _MediaDisplayWidgetState();

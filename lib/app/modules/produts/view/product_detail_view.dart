@@ -26,7 +26,8 @@ class _ProductDetailViewState extends State<ProductDetailView> {
   void initState() {
     super.initState();
     controller = Get.put(
-      ProductDetailController(product: widget.product, category: widget.category),
+      ProductDetailController(
+          product: widget.product, category: widget.category),
       tag: widget.product.code, // Unique tag for each product
     );
   }
@@ -57,9 +58,16 @@ class _ProductDetailViewState extends State<ProductDetailView> {
                   onPageChanged: (index) {
                     controller.updatePageIndex(index);
                   },
-                  itemCount: widget.product.figures[controller.selectedFigureIndex.value].colors.length,
+                  itemCount: widget
+                      .product
+                      .figures[controller.selectedFigureIndex.value]
+                      .colors
+                      .length,
                   itemBuilder: (context, index) {
-                    final color = widget.product.figures[controller.selectedFigureIndex.value].colors[index];
+                    final color = widget
+                        .product
+                        .figures[controller.selectedFigureIndex.value]
+                        .colors[index];
                     return GestureDetector(
                       onTap: () {
                         Navigator.push(
@@ -68,7 +76,8 @@ class _ProductDetailViewState extends State<ProductDetailView> {
                             builder: (context) => ImageZoomScreen(
                               imagePath: color.image,
                               productCode: widget.product.code,
-                              productName: controller.category.value?.name ?? '',
+                              productName:
+                                  controller.category.value?.name ?? '',
                             ),
                           ),
                         );
@@ -88,15 +97,24 @@ class _ProductDetailViewState extends State<ProductDetailView> {
             const SizedBox(height: 20),
             Obx(
               () {
-                if (widget.product.figures[controller.selectedFigureIndex.value].colors.length > 1) {
+                if (widget.product.figures[controller.selectedFigureIndex.value]
+                        .colors.length >
+                    1) {
                   return SizedBox(
                     height: 102,
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
-                      itemCount: widget.product.figures[controller.selectedFigureIndex.value].colors.length,
+                      itemCount: widget
+                          .product
+                          .figures[controller.selectedFigureIndex.value]
+                          .colors
+                          .length,
                       padding: const EdgeInsets.symmetric(horizontal: 12),
                       itemBuilder: (context, index) {
-                        final color = widget.product.figures[controller.selectedFigureIndex.value].colors[index];
+                        final color = widget
+                            .product
+                            .figures[controller.selectedFigureIndex.value]
+                            .colors[index];
                         return GestureDetector(
                           onTap: () {
                             controller.selectColor(color);
@@ -105,12 +123,20 @@ class _ProductDetailViewState extends State<ProductDetailView> {
                           child: Obx(
                             () => Container(
                               width: 102,
-                              margin: const EdgeInsets.symmetric(horizontal: 8.0),
+                              margin:
+                                  const EdgeInsets.symmetric(horizontal: 8.0),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(6),
                                 border: Border.all(
-                                  color: controller.selectedColorHex.value == color.hexCode ? const Color.fromARGB(255, 102, 102, 102) : const Color.fromARGB(255, 231, 231, 231),
-                                  width: controller.selectedColorHex.value == color.hexCode ? 2.5 : 1,
+                                  color: controller.selectedColorHex.value ==
+                                          color.hexCode
+                                      ? const Color.fromARGB(255, 102, 102, 102)
+                                      : const Color.fromARGB(
+                                          255, 231, 231, 231),
+                                  width: controller.selectedColorHex.value ==
+                                          color.hexCode
+                                      ? 2.5
+                                      : 1,
                                 ),
                               ),
                               child: ClipRRect(
@@ -142,7 +168,8 @@ class _ProductDetailViewState extends State<ProductDetailView> {
                   Row(
                     children: [
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 10),
                         decoration: BoxDecoration(
                           color: const Color.fromARGB(255, 245, 245, 245),
                           borderRadius: BorderRadius.circular(8),
@@ -159,10 +186,12 @@ class _ProductDetailViewState extends State<ProductDetailView> {
                       ),
                       const Padding(
                         padding: EdgeInsets.symmetric(horizontal: 8.0),
-                        child: Icon(Icons.chevron_right, color: Color.fromARGB(255, 245, 245, 245)),
+                        child: Icon(Icons.chevron_right,
+                            color: Color.fromARGB(255, 245, 245, 245)),
                       ),
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 10),
                         decoration: BoxDecoration(
                           color: const Color.fromARGB(255, 245, 245, 245),
                           borderRadius: BorderRadius.circular(8),
@@ -212,8 +241,19 @@ class _ProductDetailViewState extends State<ProductDetailView> {
                             Obx(() => Text(
                                   controller.selectedColorName.value.isNotEmpty
                                       ? controller.selectedColorName.value
-                                      : (widget.product.figures[controller.selectedFigureIndex.value].colors.isNotEmpty
-                                          ? widget.product.figures[controller.selectedFigureIndex.value].colors.first.name
+                                      : (widget
+                                              .product
+                                              .figures[controller
+                                                  .selectedFigureIndex.value]
+                                              .colors
+                                              .isNotEmpty
+                                          ? widget
+                                              .product
+                                              .figures[controller
+                                                  .selectedFigureIndex.value]
+                                              .colors
+                                              .first
+                                              .name
                                           : ''),
                                   style: const TextStyle(
                                     fontSize: 24,
@@ -241,7 +281,11 @@ class _ProductDetailViewState extends State<ProductDetailView> {
                               () => Wrap(
                                 spacing: 10.0,
                                 runSpacing: 10.0,
-                                children: widget.product.figures[controller.selectedFigureIndex.value].colors
+                                children: widget
+                                    .product
+                                    .figures[
+                                        controller.selectedFigureIndex.value]
+                                    .colors
                                     .map((color) => GestureDetector(
                                           onTap: () {
                                             controller.selectColor(color);
@@ -251,11 +295,24 @@ class _ProductDetailViewState extends State<ProductDetailView> {
                                               width: 50,
                                               height: 50,
                                               decoration: BoxDecoration(
-                                                color: Color(int.parse(color.hexCode.replaceAll('#', '0xFF'))),
-                                                borderRadius: BorderRadius.circular(54),
+                                                color: Color(int.parse(color
+                                                    .hexCode
+                                                    .replaceAll('#', '0xFF'))),
+                                                borderRadius:
+                                                    BorderRadius.circular(54),
                                                 border: Border.all(
-                                                  color: controller.selectedColorHex.value == color.hexCode ? AppColors.green : Colors.transparent,
-                                                  width: controller.selectedColorHex.value == color.hexCode ? 4.0 : 0,
+                                                  color: controller
+                                                              .selectedColorHex
+                                                              .value ==
+                                                          color.hexCode
+                                                      ? AppColors.green
+                                                      : Colors.transparent,
+                                                  width: controller
+                                                              .selectedColorHex
+                                                              .value ==
+                                                          color.hexCode
+                                                      ? 4.0
+                                                      : 0,
                                                 ),
                                               ),
                                             );
@@ -282,9 +339,12 @@ class _ProductDetailViewState extends State<ProductDetailView> {
                           height: 54,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
-                            border: Border.all(color: const Color.fromARGB(255, 224, 224, 224), width: 1),
+                            border: Border.all(
+                                color: const Color.fromARGB(255, 224, 224, 224),
+                                width: 1),
                           ),
-                          child: const Icon(Icons.remove, color: AppColors.grey),
+                          child:
+                              const Icon(Icons.remove, color: AppColors.grey),
                         ),
                       ),
                       Obx(
@@ -340,15 +400,24 @@ class _ProductDetailViewState extends State<ProductDetailView> {
                             controller.selectEdge(index);
                           },
                           child: Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 12, vertical: 8),
                             decoration: BoxDecoration(
-                              color: controller.selectedEdgeIndex.value == index ? AppColors.green : const Color.fromRGBO(239, 244, 254, 1),
+                              color: controller.selectedEdgeIndex.value == index
+                                  ? AppColors.green
+                                  : const Color.fromRGBO(239, 244, 254, 1),
                               borderRadius: BorderRadius.circular(14),
                             ),
                             child: Text(
                               edge.name,
                               style: TextStyle(
-                                  fontSize: 20, fontFamily: Fonts.gilroySemiBold, fontWeight: FontWeight.w600, color: controller.selectedEdgeIndex.value == index ? AppColors.white : AppColors.black),
+                                  fontSize: 20,
+                                  fontFamily: Fonts.gilroySemiBold,
+                                  fontWeight: FontWeight.w600,
+                                  color: controller.selectedEdgeIndex.value ==
+                                          index
+                                      ? AppColors.white
+                                      : AppColors.black),
                             ),
                           ),
                         );
@@ -369,7 +438,8 @@ class _ProductDetailViewState extends State<ProductDetailView> {
                     () => Wrap(
                       spacing: 10.0,
                       runSpacing: 10.0,
-                      children: widget.product.figures.asMap().entries.map((entry) {
+                      children:
+                          widget.product.figures.asMap().entries.map((entry) {
                         int index = entry.key;
                         Figure figure = entry.value;
                         return GestureDetector(
@@ -377,9 +447,13 @@ class _ProductDetailViewState extends State<ProductDetailView> {
                             controller.selectFigure(index);
                           },
                           child: Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 12, vertical: 8),
                             decoration: BoxDecoration(
-                              color: controller.selectedFigureIndex.value == index ? AppColors.green : const Color.fromRGBO(239, 244, 254, 1),
+                              color:
+                                  controller.selectedFigureIndex.value == index
+                                      ? AppColors.green
+                                      : const Color.fromRGBO(239, 244, 254, 1),
                               borderRadius: BorderRadius.circular(14),
                             ),
                             child: Text(
@@ -388,7 +462,10 @@ class _ProductDetailViewState extends State<ProductDetailView> {
                                   fontSize: 20,
                                   fontFamily: Fonts.gilroySemiBold,
                                   fontWeight: FontWeight.w600,
-                                  color: controller.selectedFigureIndex.value == index ? AppColors.white : AppColors.black),
+                                  color: controller.selectedFigureIndex.value ==
+                                          index
+                                      ? AppColors.white
+                                      : AppColors.black),
                             ),
                           ),
                         );
@@ -411,7 +488,11 @@ class _ProductDetailViewState extends State<ProductDetailView> {
                     () => Wrap(
                       spacing: 10.0,
                       runSpacing: 10.0,
-                      children: widget.product.figures[controller.selectedFigureIndex.value].sizes.asMap().entries.map((entry) {
+                      children: widget.product
+                          .figures[controller.selectedFigureIndex.value].sizes
+                          .asMap()
+                          .entries
+                          .map((entry) {
                         int index = entry.key;
                         Size size = entry.value;
                         return GestureDetector(
@@ -419,15 +500,24 @@ class _ProductDetailViewState extends State<ProductDetailView> {
                             controller.selectSize(index);
                           },
                           child: Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 12, vertical: 8),
                             decoration: BoxDecoration(
-                              color: controller.selectedSizeIndex.value == index ? AppColors.green : const Color.fromRGBO(239, 244, 254, 1),
+                              color: controller.selectedSizeIndex.value == index
+                                  ? AppColors.green
+                                  : const Color.fromRGBO(239, 244, 254, 1),
                               borderRadius: BorderRadius.circular(14),
                             ),
                             child: Text(
                               '${size.width}x${size.height} ${size.measurementUnit}',
                               style: TextStyle(
-                                  fontSize: 20, fontFamily: Fonts.gilroySemiBold, fontWeight: FontWeight.w600, color: controller.selectedSizeIndex.value == index ? AppColors.white : AppColors.black),
+                                  fontSize: 20,
+                                  fontFamily: Fonts.gilroySemiBold,
+                                  fontWeight: FontWeight.w600,
+                                  color: controller.selectedSizeIndex.value ==
+                                          index
+                                      ? AppColors.white
+                                      : AppColors.black),
                             ),
                           ),
                         );
@@ -474,56 +564,98 @@ class _ProductDetailViewState extends State<ProductDetailView> {
                               children: [
                                 Expanded(
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Container(
                                         height: 48,
                                         decoration: BoxDecoration(
                                           color: AppColors.white,
-                                          border: Border.all(color: const Color(0xFFE0E0E0)),
-                                          borderRadius: BorderRadius.circular(8),
+                                          border: Border.all(
+                                              color: const Color(0xFFE0E0E0)),
+                                          borderRadius:
+                                              BorderRadius.circular(8),
                                         ),
                                         child: Obx(() => TextField(
-                                              controller: controller.widthController,
-                                              focusNode: controller.widthFocusNode,
-                                              keyboardType: TextInputType.number,
-                                              onChanged: (value) => controller.validateWidth(value),
+                                              controller:
+                                                  controller.widthController,
+                                              focusNode:
+                                                  controller.widthFocusNode,
+                                              keyboardType:
+                                                  TextInputType.number,
+                                              onChanged: (value) => controller
+                                                  .validateWidth(value),
                                               decoration: InputDecoration(
                                                 border: InputBorder.none,
-                                                contentPadding: const EdgeInsets.symmetric(horizontal: 12),
+                                                contentPadding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 12),
                                                 hintText: 'Ini (sm)',
                                                 suffixText: 'sm',
-                                                enabledBorder: OutlineInputBorder(
+                                                enabledBorder:
+                                                    OutlineInputBorder(
                                                   borderSide: BorderSide(
-                                                    color: controller.widthErrorText.value == null ? const Color(0xFFE0E0E0) : Colors.red,
-                                                    width: controller.widthErrorText.value == null ? 1.0 : 2.0,
+                                                    color: controller
+                                                                .widthErrorText
+                                                                .value ==
+                                                            null
+                                                        ? const Color(
+                                                            0xFFE0E0E0)
+                                                        : Colors.red,
+                                                    width: controller
+                                                                .widthErrorText
+                                                                .value ==
+                                                            null
+                                                        ? 1.0
+                                                        : 2.0,
                                                   ),
-                                                  borderRadius: BorderRadius.circular(8),
+                                                  borderRadius:
+                                                      BorderRadius.circular(8),
                                                 ),
-                                                focusedBorder: OutlineInputBorder(
+                                                focusedBorder:
+                                                    OutlineInputBorder(
                                                   borderSide: BorderSide(
-                                                    color: controller.widthErrorText.value == null ? Theme.of(context).primaryColor : Colors.red,
+                                                    color: controller
+                                                                .widthErrorText
+                                                                .value ==
+                                                            null
+                                                        ? Theme.of(context)
+                                                            .primaryColor
+                                                        : Colors.red,
                                                     width: 2.0,
                                                   ),
-                                                  borderRadius: BorderRadius.circular(8),
+                                                  borderRadius:
+                                                      BorderRadius.circular(8),
                                                 ),
-                                                suffixStyle: const TextStyle(color: Colors.black, fontFamily: Fonts.gilroySemiBold, fontWeight: FontWeight.w600),
-                                                hintStyle: const TextStyle(color: Color(0xFF9E9E9E)),
+                                                suffixStyle: const TextStyle(
+                                                    color: Colors.black,
+                                                    fontFamily:
+                                                        Fonts.gilroySemiBold,
+                                                    fontWeight:
+                                                        FontWeight.w600),
+                                                hintStyle: const TextStyle(
+                                                    color: Color(0xFF9E9E9E)),
                                               ),
-                                              style: const TextStyle(fontSize: 16),
+                                              style:
+                                                  const TextStyle(fontSize: 16),
                                             )),
                                       ),
                                       Obx(() {
-                                        if (controller.widthErrorText.value != null) {
+                                        if (controller.widthErrorText.value !=
+                                            null) {
                                           return Padding(
-                                            padding: const EdgeInsets.only(top: 4.0, left: 2.0),
+                                            padding: const EdgeInsets.only(
+                                                top: 4.0, left: 2.0),
                                             child: Text(
                                               controller.widthErrorText.value!,
-                                              style: const TextStyle(color: Colors.red, fontSize: 16),
+                                              style: const TextStyle(
+                                                  color: Colors.red,
+                                                  fontSize: 16),
                                             ),
                                           );
                                         } else {
-                                          return const SizedBox.shrink(); // Hata yoksa boşluk bırakma
+                                          return const SizedBox
+                                              .shrink(); // Hata yoksa boşluk bırakma
                                         }
                                       }),
                                     ],
@@ -532,53 +664,94 @@ class _ProductDetailViewState extends State<ProductDetailView> {
                                 const SizedBox(width: 16),
                                 Expanded(
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       Container(
                                         height: 48,
                                         decoration: BoxDecoration(
                                           color: AppColors.white,
-                                          border: Border.all(color: const Color(0xFFE0E0E0)),
-                                          borderRadius: BorderRadius.circular(8),
+                                          border: Border.all(
+                                              color: const Color(0xFFE0E0E0)),
+                                          borderRadius:
+                                              BorderRadius.circular(8),
                                         ),
                                         child: Obx(() => TextField(
-                                              controller: controller.lengthController,
-                                              focusNode: controller.lengthFocusNode,
-                                              keyboardType: TextInputType.number,
-                                              onChanged: (value) => controller.validateHeight(value),
+                                              controller:
+                                                  controller.lengthController,
+                                              focusNode:
+                                                  controller.lengthFocusNode,
+                                              keyboardType:
+                                                  TextInputType.number,
+                                              onChanged: (value) => controller
+                                                  .validateHeight(value),
                                               decoration: InputDecoration(
                                                 border: InputBorder.none,
-                                                contentPadding: const EdgeInsets.symmetric(horizontal: 12),
+                                                contentPadding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 12),
                                                 hintText: 'Uzynlygy (sm)',
                                                 suffixText: 'sm',
-                                                enabledBorder: OutlineInputBorder(
+                                                enabledBorder:
+                                                    OutlineInputBorder(
                                                   borderSide: BorderSide(
-                                                    color: controller.heightErrorText.value == null ? const Color(0xFFE0E0E0) : Colors.red,
-                                                    width: controller.heightErrorText.value == null ? 1.0 : 2.0,
+                                                    color: controller
+                                                                .heightErrorText
+                                                                .value ==
+                                                            null
+                                                        ? const Color(
+                                                            0xFFE0E0E0)
+                                                        : Colors.red,
+                                                    width: controller
+                                                                .heightErrorText
+                                                                .value ==
+                                                            null
+                                                        ? 1.0
+                                                        : 2.0,
                                                   ),
-                                                  borderRadius: BorderRadius.circular(8),
+                                                  borderRadius:
+                                                      BorderRadius.circular(8),
                                                 ),
-                                                focusedBorder: OutlineInputBorder(
+                                                focusedBorder:
+                                                    OutlineInputBorder(
                                                   borderSide: BorderSide(
-                                                    color: controller.heightErrorText.value == null ? Theme.of(context).primaryColor : Colors.red,
+                                                    color: controller
+                                                                .heightErrorText
+                                                                .value ==
+                                                            null
+                                                        ? Theme.of(context)
+                                                            .primaryColor
+                                                        : Colors.red,
                                                     width: 2.0,
                                                   ),
-                                                  borderRadius: BorderRadius.circular(8),
+                                                  borderRadius:
+                                                      BorderRadius.circular(8),
                                                 ),
-                                                suffixStyle: const TextStyle(color: Colors.black, fontFamily: Fonts.gilroySemiBold, fontWeight: FontWeight.w600),
-                                                hintStyle: const TextStyle(color: Color(0xFF9E9E9E)),
+                                                suffixStyle: const TextStyle(
+                                                    color: Colors.black,
+                                                    fontFamily:
+                                                        Fonts.gilroySemiBold,
+                                                    fontWeight:
+                                                        FontWeight.w600),
+                                                hintStyle: const TextStyle(
+                                                    color: Color(0xFF9E9E9E)),
                                               ),
-                                              style: const TextStyle(fontSize: 16),
+                                              style:
+                                                  const TextStyle(fontSize: 16),
                                             )),
                                       ),
                                       Obx(() {
-                                        if (controller.heightErrorText.value != null) {
+                                        if (controller.heightErrorText.value !=
+                                            null) {
                                           return Padding(
-                                            padding: const EdgeInsets.only(top: 4.0, left: 2.0),
+                                            padding: const EdgeInsets.only(
+                                                top: 4.0, left: 2.0),
                                             child: Text(
                                               controller.heightErrorText.value!,
-                                              style: const TextStyle(color: Colors.red, fontSize: 16),
+                                              style: const TextStyle(
+                                                  color: Colors.red,
+                                                  fontSize: 16),
                                             ),
                                           );
                                         } else {
@@ -605,49 +778,58 @@ class _ProductDetailViewState extends State<ProductDetailView> {
                     ),
                     child: Padding(
                       padding: EdgeInsets.all(20),
-                      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                        const Text(
-                          'Bellik',
-                          style: TextStyle(
-                            fontSize: 20,
-                            color: AppColors.green,
-                            fontWeight: FontWeight.w600,
-                            fontFamily: Fonts.gilroySemiBold,
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        Container(
-                          decoration: BoxDecoration(
-                            color: AppColors.white,
-                            border: Border.all(color: const Color(0xFFE0E0E0)),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: TextField(
-                            controller: controller.noteController,
-                            keyboardType: TextInputType.multiline,
-                            maxLines: 5,
-                            minLines: 3,
-                            decoration: InputDecoration(
-                              hintText: 'Bellik giriziň ',
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: const BorderSide(color: Color(0xFF9E9E9E)),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: BorderSide(color: Theme.of(context).primaryColor, width: 2),
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'Bellik',
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: AppColors.green,
+                                fontWeight: FontWeight.w600,
+                                fontFamily: Fonts.gilroySemiBold,
                               ),
                             ),
-                            onChanged: (value) => controller.note.value = value,
-                          ),
-                        ),
-                      ]),
+                            const SizedBox(height: 10),
+                            Container(
+                              decoration: BoxDecoration(
+                                color: AppColors.white,
+                                border:
+                                    Border.all(color: const Color(0xFFE0E0E0)),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: TextField(
+                                controller: controller.noteController,
+                                keyboardType: TextInputType.multiline,
+                                maxLines: 5,
+                                minLines: 3,
+                                decoration: InputDecoration(
+                                  hintText: 'Bellik giriziň ',
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: const BorderSide(
+                                        color: Color(0xFF9E9E9E)),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: BorderSide(
+                                        color: Theme.of(context).primaryColor,
+                                        width: 2),
+                                  ),
+                                ),
+                                onChanged: (value) =>
+                                    controller.note.value = value,
+                              ),
+                            ),
+                          ]),
                     ),
                   ),
-                  if (widget.product.description != null && widget.product.description!.isNotEmpty) ...[
+                  if (widget.product.description != null &&
+                      widget.product.description!.isNotEmpty) ...[
                     const SizedBox(height: 35),
                     Text(
-                      widget.product.description ?? "", // Buradaki '?? ""' kullanımı zaten güvenli.
+                      widget.product.description ??
+                          "", // Buradaki '?? ""' kullanımı zaten güvenli.
                       style: const TextStyle(
                         fontSize: 20,
                         color: Color.fromARGB(255, 110, 110, 112),
@@ -660,17 +842,21 @@ class _ProductDetailViewState extends State<ProductDetailView> {
                   Obx(() => Container(
                         color: const Color.fromARGB(255, 247, 250, 252),
                         child: Table(
-                          defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+                          defaultVerticalAlignment:
+                              TableCellVerticalAlignment.middle,
                           border: TableBorder.all(color: Color(0xFFE7E7E7)),
                           columnWidths: const <int, TableColumnWidth>{
                             0: FlexColumnWidth(2),
                             1: FlexColumnWidth(2),
                           },
-                          children: (controller.category.value?.attributes ?? []).map((attr) {
+                          children:
+                              (controller.category.value?.attributes ?? [])
+                                  .map((attr) {
                             return TableRow(
                               children: [
                                 Container(
-                                  color: const Color.fromARGB(255, 247, 250, 252),
+                                  color:
+                                      const Color.fromARGB(255, 247, 250, 252),
                                   padding: const EdgeInsets.all(12.0),
                                   child: Text(
                                     attr.name,
@@ -718,15 +904,18 @@ class _ProductDetailViewState extends State<ProductDetailView> {
                             height: 493,
                             child: GridView.builder(
                               scrollDirection: Axis.horizontal,
-                              itemCount: controller.filteredProductskopsatylan.length,
-                              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                              itemCount:
+                                  controller.filteredProductskopsatylan.length,
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount: 1,
                                 mainAxisSpacing: 12,
                                 crossAxisSpacing: 12,
                                 childAspectRatio: 600 / 231,
                               ),
                               itemBuilder: (context, index) {
-                                final product = controller.filteredProductskopsatylan[index];
+                                final product = controller
+                                    .filteredProductskopsatylan[index];
                                 return ProductCardWidget(product: product);
                               },
                             ),
@@ -758,14 +947,16 @@ class _ProductDetailViewState extends State<ProductDetailView> {
                             child: GridView.builder(
                               scrollDirection: Axis.horizontal,
                               itemCount: controller.filteredProducts.length,
-                              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount: 1,
                                 mainAxisSpacing: 12,
                                 crossAxisSpacing: 12,
                                 childAspectRatio: 600 / 231,
                               ),
                               itemBuilder: (context, index) {
-                                final product = controller.filteredProducts[index];
+                                final product =
+                                    controller.filteredProducts[index];
                                 return ProductCardWidget(product: product);
                               },
                             ),
@@ -788,7 +979,8 @@ class _ProductDetailViewState extends State<ProductDetailView> {
     );
   }
 
-  Padding bottomNavBar(ProductDetailController controller, BuildContext context) {
+  Padding bottomNavBar(
+      ProductDetailController controller, BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(
         left: 16,
@@ -826,12 +1018,17 @@ class _ProductDetailViewState extends State<ProductDetailView> {
             children: [
               SvgPicture.asset(
                 "assets/images/sebet.svg",
-                colorFilter: const ColorFilter.mode(AppColors.white, BlendMode.srcIn),
+                colorFilter:
+                    const ColorFilter.mode(AppColors.white, BlendMode.srcIn),
               ),
               const SizedBox(width: 12),
               const Text(
                 'Sebede goş',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600, fontFamily: Fonts.gilroySemiBold, color: AppColors.white),
+                style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.w600,
+                    fontFamily: Fonts.gilroySemiBold,
+                    color: AppColors.white),
               ),
             ],
           ),

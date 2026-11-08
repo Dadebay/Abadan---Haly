@@ -34,7 +34,8 @@ class CartItem {
         quantity: json['quantity'],
         colorName: json['colorName'],
         size: json['size'],
-        imageUrl: json['imageUrl'] ?? Product.fromJson(json['product']).figures.first.colors.first.image,
+        imageUrl: json['imageUrl'] ??
+            Product.fromJson(json['product']).figures.first.colors.first.image,
         edge: json['edge'] ?? '',
         note: json['note'] ?? '',
       );

@@ -38,7 +38,8 @@ class OrderItemCard extends StatelessWidget {
             ),
           ),
           Text(orderDate,
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w500)),
+              style:
+                  const TextStyle(fontSize: 20, fontWeight: FontWeight.w500)),
         ],
       ),
     );
