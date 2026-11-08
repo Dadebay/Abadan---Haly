@@ -41,6 +41,8 @@ jobs:
           xcrun simctl create 'CI iPhone' \
             com.apple.CoreSimulator.SimDeviceType.iPhone-17-Pro \
             com.apple.CoreSimulator.SimRuntime.iOS-26-5
+          xcrun simctl boot 'CI iPhone'
+          xcrun simctl bootstatus 'CI iPhone' -b
           xcrun simctl list devices available
       - uses: subosito/flutter-action@v2
         with:
